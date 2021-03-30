@@ -5,6 +5,9 @@ const connection = require("./data_base/data_base")
 const categoriesController = require("./category/categoryController")
 const articlesController = require("./articles/articlesControllers")
 
+const Article = require("./articles/Article")
+const Category = require("./category/Category")
+
 
 app.set('view engine','ejs')
 app.use(express.static('public'))
