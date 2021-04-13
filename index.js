@@ -1,5 +1,6 @@
 const bodyParser = require("body-parser");
 const express = require("express");
+const session = require("express-session")
 const app = express();
 const connection = require("./data_base/data_base")
 const categoriesController = require("./category/categoryController")
@@ -15,6 +16,15 @@ const User = require("./user/User")
 app.set('view engine','ejs')
 app.use(express.static('public'))
 
+
+//session
+app.use(session({
+    secret: "qualquercoisa", 
+    cookie: {
+        maxAge: 30000
+    }
+}))
+
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
@@ -25,6 +35,10 @@ connection
     }).catch((error) => {
         console.log(error)
     })
+    
+app.use("/", categoriesController)
+app.use("/", articlesController)
+app.use("/", UserController)
 
 app.get("/", (req, res) => {
     Article.findAll({
@@ -51,10 +65,10 @@ app.get("/:slug", (req, res) => {
                 res.render("article", {article: article, categories: categories})
                }))
         }else{
-            res.render("/")
+            res.redirect("/")
         }
     }).catch(err => {
-        res.render("/")
+        res.redirect("/")
     })
 })
 
@@ -79,9 +93,6 @@ app.get("/category/:slug", (req, res) => {
     })
 })
 
-app.use("/", categoriesController)
-app.use("/", articlesController)
-app.use("/", UserController)
 
 app.listen(8080, () => {
     console.log("O servidor está rodando")
