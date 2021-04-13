@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize")
 
 const connection = new Sequelize(
-    'blog_guiaPress',
+    'bd_guiaPress',
     'root',
     '', {
         host:'localhost',
